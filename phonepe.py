@@ -360,6 +360,31 @@ def Top_insurance_plot_1(df, state):
         st.plotly_chart(fig_top_insur_bar_2)
 
 
+# TOP 
+def Top_user_plot_1(df,year):
+    tuy=df[df["Years"]==year]
+    tuy.reset_index(drop = True, inplace=True)
+
+    tuyg=pd.DataFrame(tuy.groupby(["State" ,"Quarter"])["RegisteredUsers"].sum())
+    tuyg.reset_index(inplace=True)
+
+    fig_top_plot_1=px.bar(tuyg,x="State",y="RegisteredUsers",color="Quarter",title=f"{year} REGISTERED USERS",width=1000,height=800,
+                        color_discrete_sequence=["green"],hover_name="State")
+    st.plotly_chart(fig_top_plot_1)
+
+    return tuy
+
+# Top User Plot 2
+
+def Top_user_plot_2(df, state):
+    tuys=df[df["State"]==state]
+    tuys.reset_index(drop = True, inplace=True)
+
+    fig_top_plot_2=px.bar(tuys,x="Quarter",y="RegisteredUsers",color="RegisteredUsers",title=f"{state.upper()} - REGISTERED USERS, PINCODES, QUARTER",width=1000,height=800,
+                            color_discrete_sequence=["pink"],hover_data="Pincodes")
+    st.plotly_chart(fig_top_plot_2)
+
+
 ## StreamLit
 st.set_page_config(layout="wide")
 st.title("PHONEPE DATA VISUALIZATION AND EXPLORATION")
@@ -469,7 +494,7 @@ elif select=="Data Exploration":
             col1,col2=st.columns(2)
 
             with col1:
-                states=st.selectbox("Select the state", Map_insur_tac_Y_Q["State"].unique())
+                states=st.selectbox("select one state", Map_insur_tac_Y_Q["State"].unique())
 
             Map_insur_Districts(Map_insur_tac_Y_Q,states)
 
@@ -540,31 +565,64 @@ elif select=="Data Exploration":
 
             with col1:
 
-                years=st.slider("Select the Year",Top_insurance["Years"].min(),Top_insurance["Years"].max(),Top_insurance["Years"].min())
+                years=st.slider("Select year",Top_insurance["Years"].min(),Top_insurance["Years"].max(),Top_insurance["Years"].min())
             Top_insur_tac_Y=Transaction_amount_count_Y(Top_insurance,years)
 
             col1,col2=st.columns(2)
 
             with col1:
-                states=st.selectbox("select the State", Top_insur_tac_Y["State"].unique())
+                states=st.selectbox("Select The state_y", Top_insur_tac_Y["State"].unique())
 
             Top_insurance_plot_1(Top_insur_tac_Y,states)
 
             col1,col2=st.columns(2)
 
             with col1:
-                quarters=st.slider("Select The Quarter",Top_insur_tac_Y["Quarter"].min(),Top_insur_tac_Y["Quarter"].max(),Top_insur_tac_Y["Quarter"].min())
-            Top_insur_tac_Y_Q=Transaction_amount_count_Y(Top_insur_tac_Y,quarters)
-
-            
+                quarters=st.slider("Select the Quarter",Top_insur_tac_Y["Quarter"].min(),Top_insur_tac_Y["Quarter"].max(),Top_insur_tac_Y["Quarter"].min())
+            Top_insur_tac_Y_Q=Transaction_amount_count_Y_Q(Top_insur_tac_Y,quarters)
 
 
 
         elif method3=="Top Transaction":
 
-            pass
+            col1,col2=st.columns(2)
+
+            with col1:
+
+                years=st.slider("Select year",Top_transaction["Years"].min(),Top_transaction["Years"].max(),Top_transaction["Years"].min())
+            Top_tran_tac_Y=Transaction_amount_count_Y(Top_transaction,years)
+
+            col1,col2=st.columns(2)
+
+            with col1:
+                states=st.selectbox("Select state", Top_tran_tac_Y["State"].unique())
+
+            Top_insurance_plot_1(Top_tran_tac_Y,states)
+
+            col1,col2=st.columns(2)
+
+            with col1:
+                quarters=st.slider("Select Quarter",Top_tran_tac_Y["Quarter"].min(),Top_tran_tac_Y["Quarter"].max(),Top_tran_tac_Y["Quarter"].min())
+            Top_tran_tac_Y_Q=Transaction_amount_count_Y_Q(Top_tran_tac_Y,quarters)
+
+
+
         elif method3=="Top User":
-            pass
+            
+            col1,col2=st.columns(2)
+
+            with col1:
+                years=st.slider("Select the year_t",Top_user["Years"].min(),Top_user["Years"].max(),Top_user["Years"].min())
+            Top_user_Y=Top_user_plot_1(Top_user,years)
+
+            col1,col2=st.columns(2)
+
+            with col1:
+                states=st.selectbox("Select state", Top_user_Y["State"].unique())
+
+            Top_user_plot_2(Top_user_Y,states)
+
+
 
 elif select=="Top Charts":
     pass
