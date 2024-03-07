@@ -386,13 +386,31 @@ def Top_user_plot_2(df, state):
 
 
 ## StreamLit
+
 st.set_page_config(layout="wide")
 st.title("PHONEPE DATA VISUALIZATION AND EXPLORATION")
 
 with st.sidebar:
-    select=option_menu("Main Menu",["Home","Data Exploration","Top Charts"])
+    select=option_menu("Main Menu",["Home","Data Exploration"])
 if select=="Home":
-    pass
+    col1,col2= st.columns(2)
+
+    with col1:
+        st.header("PHONEPE")
+        st.subheader("INDIA'S BEST TRANSACTION APP")
+        st.markdown("PhonePe  is an Indian digital payments and financial technology company")
+        st.download_button("DOWNLOAD THE APP NOW", "https://www.phonepe.com/app-download/")
+
+    with col2:
+        
+        st.write("****FEATURES :****")
+        st.write("****One App For All Your Payments****")
+        st.write("****Your Bank Account Is All You Need****")
+        st.write("****Easy Transactions****")
+        st.write("****Multiple Payment Modes****")
+        st.write("****Bank Balance check****")
+        st.write("****PhonePe Merchants****")
+        st.write("****Earn Great Rewards****")
 elif select=="Data Exploration":
     tab1,tab2,tab3=st.tabs(["Aggregated Analysis","Map Analysis","Top Analysis"])
     with tab1:
@@ -624,5 +642,4 @@ elif select=="Data Exploration":
 
 
 
-elif select=="Top Charts":
-    pass
+
